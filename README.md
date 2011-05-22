@@ -42,26 +42,26 @@ Documentation
 1. `el` - The element to be tapped.
 	* (*element*) The DOM element.
 	* (*string*) A string containing the id of the DOM element.
-2. `opt` - The options object or a function.
-	* (*objects*) The options to be passed.
+2. `opts` - The options object or a function.
+	* (*object*) The options to be passed.
 	* (*function*) The function to execute when tapped.
 
 ### Options
 
-* noScroll - (*boolean*: defaults to false) Whether or not to scroll when *moving* on the element.
+* noScroll - (*boolean*: defaults to `false`) Whether or not to scroll when *moving* on the element.
 * activeClass - (*string*: defaults to `tappable-active`) A string indicating the *active* class applied to the element.
 * onTap - (*function*) The function to execute when tapped.
 * onStart - (*function*) The function to execute when `touchstart` event is fired.
 * onMove - (*function*) The function to execute when `touchmove` event is fired.
-* onMoveOut - (*function*) The function to execute when touch moves *out* of the element, if `noScroll` is true.
-* onMoveIn - (*function*) The function to execute when touch moves back in the element, if `noScroll` is true.
+* onMoveOut - (*function*) The function to execute when touch moves *out* of the element, if `noScroll` is `true`.
+* onMoveIn - (*function*) The function to execute when touch moves back in the element, if `noScroll` is `true`.
 * onEnd - (*function*) The function to execute when `touchend` event is fired.
-* onCancel - (*function*) The function to execute when `touchcancel` event is fired or when touch moves, if `noScroll` is false.
+* onCancel - (*function*) The function to execute when `touchcancel` event is fired, **or** when touch *moves* if `noScroll` is `false`.
 
 Contributing
 ------------
 
-Feel free to fork this project! Help would be appreciated if this could be tested on Android, WebOS or any other touch-friendly browsers, not just mobile ones.
+Feel free to fork this project! Help and feedback would be appreciated, especially if this could be tested on Android, WebOS or any other touch-friendly browsers, not just mobile ones.
 
 License
 -------
