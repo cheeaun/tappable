@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<title>Tappable demo</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{
+	-webkit-text-size-adjust: none;
+	font-family: sans-serif;
+}
+a{
+	border: 2px solid #aaa;
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	margin: 50px 10px;
+	vertical-align: middle;
+	text-decoration: none;
+}
+a.tappable-active{
+	color: #fff;
+	background-color: red;
+}
+</style>
+<script src="tappable.js"></script>
+<h1>Tappable demo</h1>
+<a id="a" href="#">Tap me</a>
+<a id="b" href="#">Tap me (noScroll)</a>
+<script>
+tappable('a', function(){
+	alert('tap');
+});
+tappable('b', {
+	noScroll: true,
+	onTap: function(){
+		alert('tap');
+	}
+});
+</script>
