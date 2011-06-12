@@ -26,9 +26,13 @@ This means that once the finger moves, it will not fire the tap event. However, 
 
 ![Diagram 3](https://github.com/cheeaun/tappable/raw/master/diagrams/diagram-3.png)
 
+When the page scrolls, the button is not tapped.
+
 The second case is the `noScroll` mode, where moving your finger on the element will no make the page scroll. This is useful for mobile web apps which might implement their own *fixed* headers or sections on the page.
 
 ![Diagram 4](https://github.com/cheeaun/tappable/raw/master/diagrams/diagram-4.png)
+
+The button is tapped when the finger is on top of the button, even after moving in and out.
 
 Documentation
 -------------
@@ -50,6 +54,7 @@ Documentation
 
 * noScroll - (*boolean*: defaults to `false`) Whether or not to scroll when *moving* on the element.
 * activeClass - (*string*: defaults to `tappable-active`) A string indicating the *active* class applied to the element.
+* allowClick - (*boolean*: defaults to `false`) Whether or not to `preventDefault` the click on the element.
 * onTap - (*function*) The function to execute when tapped.
 * onStart - (*function*) The function to execute when `touchstart` event is fired.
 * onMove - (*function*) The function to execute when `touchmove` event is fired.
