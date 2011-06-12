@@ -17,7 +17,8 @@ var tappable = function(el, opts){
 			onMoveOut: noop,
 			onMoveIn: noop,
 			onEnd: noop,
-			onCancel: noop
+			onCancel: noop,
+			allowClick: false
 		};
 	
 	if (typeof el == 'string') el = document.getElementById(el);
@@ -30,10 +31,12 @@ var tappable = function(el, opts){
 			return str.replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '');
 		},
 		addActiveClass = function(){
+			if (!activeClass) return;
 			if (clean(el.className).indexOf(activeClass) > -1) return;
 			el.className = clean(el.className + ' ' + activeClass);
 		},
 		removeActiveClass = function(){
+			if (!activeClass) return;
 			el.className = el.className.replace(new RegExp('(^|\\s)' + activeClass + '(?:\\s|$)'), '$1');
 		},
 		move = function(e){
@@ -104,7 +107,7 @@ var tappable = function(el, opts){
 		options.onCancel.call(el, e);
 	});
 	
-	el.addEventListener('click', function(e){
+	if (!options.allowClick) el.addEventListener('click', function(e){
 		e.preventDefault();
 	}, false);
 };
