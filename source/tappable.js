@@ -1,5 +1,11 @@
 var tappable = function(el, opts){
-	if (!window.Touch) return;
+	if (!el) return;
+	
+	if (!window.Touch && opts){
+		var onTap = (typeof opts == 'function') ? opts : opts.onTap;
+		el.addEventListener('click', onTap, false);
+		return;
+	}
 	
 	var noop = function(){},
 		abs = Math.abs,
