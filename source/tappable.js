@@ -50,6 +50,7 @@ var tappable = function(el, opts){
 				clientX = changedTouches.clientX,
 				clientY = changedTouches.clientY,
 				target = document.elementFromPoint(clientX, clientY);
+			if (!e.target) e.target = target;
 			if (target.nodeType == 3) target = target.parentNode;
 			
 			if (noScroll){
@@ -76,6 +77,7 @@ var tappable = function(el, opts){
 			el.removeEventListener('touchend', end, false);
 			
 			var target = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+			if (!e.target) e.target = target;
 			if (target.nodeType == 3) target = target.parentNode;
 			
 			options.onEnd.call(el, e, target);
@@ -98,6 +100,7 @@ var tappable = function(el, opts){
 			clientX = targetTouches.clientX,
 			clientY = targetTouches.clientY,
 			target = document.elementFromPoint(clientX, clientY);
+		if (!e.target) e.target = target;
 		if (target.nodeType == 3) target = target.parentNode;
 		
 		startTarget = target;
