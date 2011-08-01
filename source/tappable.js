@@ -1,12 +1,6 @@
 var tappable = function(el, opts){
 	if (!el) return;
 	
-	if (!window.Touch && opts){
-		var onTap = (typeof opts == 'function') ? opts : opts.onTap;
-		el.addEventListener('click', onTap, false);
-		return;
-	}
-	
 	var noop = function(){},
 		abs = Math.abs,
 		cancel = false,
@@ -30,6 +24,12 @@ var tappable = function(el, opts){
 	if (typeof el == 'string') el = document.getElementById(el);
 	if (typeof opts == 'function') opts = { onTap: opts };
 	for (var key in (opts || {})) options[key] = opts[key];
+	
+	if (!window.Touch && opts){
+		var onTap = (typeof opts == 'function') ? opts : opts.onTap;
+		el.addEventListener('click', onTap, false);
+		return;
+	}
 	
 	var noScroll = options.noScroll,
 		activeClass = options.activeClass,
