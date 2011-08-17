@@ -63,6 +63,22 @@ Documentation
 * onEnd - (*function*) The function to execute when `touchend` event is fired.
 * onCancel - (*function*) The function to execute when `touchcancel` event is fired, **or** when touch *moves* if `noScroll` is `false`.
 
+Event Delegation
+----------------
+
+Here's a simple example:
+
+	tappable(document.body || document.getElementsByTagName('body')[0], {
+		onTap: function(e, target){
+			// e.target works too
+			if (target.tagName.toLowerCase() == 'a'){
+				alert('tap');
+			}
+		}
+	});
+
+For (almost) every callback function, a second argument which is the target element node, is passed. As a bonus, the event object also have an additional `target` attribute which is the target node (can be any node type, not just element node).
+
 Contributing
 ------------
 
