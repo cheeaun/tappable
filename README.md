@@ -5,7 +5,7 @@ Tappable is a simple, standalone library to invoke the **tap** event for touch-f
 
 Here's how you implement the code:
 
-	tappable('elementID', function(){
+	tappable('#selector', function(){
 		alert('tap');
 	});
 
@@ -39,13 +39,11 @@ Documentation
 
 ###Syntax
 
-	tappable(el, opts);
+	tappable(selector, opts);
 
 ### Arguments
 
-1. `el` - The element to be tapped.
-	* (*element*) The DOM element.
-	* (*string*) A string containing the id of the DOM element.
+1. `selector` - (*string*) The CSS selector expression of element to be tapped.
 2. `opts` - The options object or a function.
 	* (*object*) The options to be passed.
 	* (*function*) The function to execute when tapped.
@@ -54,7 +52,6 @@ Documentation
 
 * noScroll - (*boolean*: defaults to `false`) Whether or not to scroll when *moving* on the element.
 * activeClass - (*string*: defaults to `tappable-active`) A string indicating the *active* class applied to the element.
-* allowClick - (*boolean*: defaults to `false`) Whether or not to `preventDefault` the click on the element.
 * onTap - (*function*) The function to execute when tapped.
 * onStart - (*function*) The function to execute when `touchstart` event is fired.
 * onMove - (*function*) The function to execute when `touchmove` event is fired.
@@ -62,9 +59,16 @@ Documentation
 * onMoveIn - (*function*) The function to execute when touch moves back in the element, if `noScroll` is `true`.
 * onEnd - (*function*) The function to execute when `touchend` event is fired.
 * onCancel - (*function*) The function to execute when `touchcancel` event is fired, **or** when touch *moves* if `noScroll` is `false`.
+* allowClick - (*boolean*: defaults to `false`) Whether or not to `preventDefault` the click on the element.
+* boundMargin - (*integer*: defaults to 50) A number indicating the bounding area of tapped region (of the element).
+* noScrollDelay - (*integer*: defaults to 0) A number indicating the delay in ms before 'noScroll' option kicks in.
+* activeClassDelay - (*integer*: defaults to 0) A number indicating the delay in ms before the *active* class is applied.
+* inactiveClassDelay - (*integer*: defaults to 0) A number indicating the delay in ms before the *active* class is removed.
 
-Event Delegation
-----------------
+Event Delegation (for tagged version 1.0)
+----------------------------------------
+
+**Note: This is no longer needed. The latest code now does event delegation by default**.
 
 Here's a simple example:
 
@@ -87,4 +91,4 @@ Feel free to fork this project! Help and feedback would be appreciated, especial
 License
 -------
 
-Tappable is licensed under the MIT license.
+Tappable is licensed under the [MIT license](http://cheeaun.mit-license.org/).
