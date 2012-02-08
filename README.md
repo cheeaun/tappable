@@ -1,4 +1,4 @@
-﻿Tappable
+Tappable
 ========
 
 Tappable is a simple, standalone library to invoke the **tap** event for touch-friendly web browsers. Currently it's only tested on iOS Mobile Safari as I don't have any other smartphones to test with. The codebase is heavily inspired by Matteo Spinelli's [Remove onClick delay on webkit for iPhone](http://cubiq.org/remove-onclick-delay-on-webkit-for-iphone) and Ryan Fioravanti's [Creating Fast Buttons for Mobile Web Applications](http://code.google.com/mobile/articles/fast_buttons.html).
@@ -64,6 +64,13 @@ Documentation
 * noScrollDelay - (*integer*: defaults to 0) A number indicating the delay in ms before 'noScroll' option kicks in.
 * activeClassDelay - (*integer*: defaults to 0) A number indicating the delay in ms before the *active* class is applied.
 * inactiveClassDelay - (*integer*: defaults to 0) A number indicating the delay in ms before the *active* class is removed.
+
+Demo
+----
+
+Load [http://fiddle.jshell.net/cheeaun/jxwsy/show/light/]() in your browser. Edit here [http://jsfiddle.net/cheeaun/jxwsy/](). Or scan this QR code:
+
+![http://fiddle.jshell.net/cheeaun/jxwsy/show/light/](http://goo.gl/wFhSC.qr)
 
 Event Delegation (for tagged version 1.0)
 ----------------------------------------
