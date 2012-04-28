@@ -28,7 +28,7 @@ This means that once the finger moves, it will not fire the tap event. However, 
 
 When the page scrolls, the button is not tapped.
 
-The second case is the `noScroll` mode, where moving your finger on the element will no make the page scroll. This is useful for mobile web apps which might implement their own *fixed* headers or sections on the page.
+The second case is the `noScroll` mode, where moving your finger on the element will not make the page scroll. This is useful for mobile web apps which might implement their own *fixed* headers or sections on the page.
 
 ![Diagram 4](https://github.com/cheeaun/tappable/raw/master/diagrams/diagram-4.png)
 
