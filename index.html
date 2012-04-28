@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Tappable by cheeaun</title>
+    
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Tappable</h1>
+        <p>A simple, standalone library to invoke the tap event for touch-friendly web browsers.</p>
+        <p class="view"><a href="https://github.com/cheeaun/tappable">View the Project on GitHub <small>cheeaun/tappable</small></a></p>
+        <ul>
+          <li><a href="https://github.com/cheeaun/tappable/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/cheeaun/tappable/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/cheeaun/tappable">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Tappable</h1>
+
+<p>Tappable is a simple, standalone library to invoke the <strong>tap</strong> event for touch-friendly web browsers. Currently it's only tested on iOS Mobile Safari as I don't have any other smartphones to test with. The codebase is heavily inspired by Matteo Spinelli's <a href="http://cubiq.org/remove-onclick-delay-on-webkit-for-iphone">Remove onClick delay on webkit for iPhone</a> and Ryan Fioravanti's <a href="http://code.google.com/mobile/articles/fast_buttons.html">Creating Fast Buttons for Mobile Web Applications</a>.</p>
+
+<p>Here's how you implement the code:</p>
+
+<pre><code>tappable('#selector', function(){
+    alert('tap');
+});
+</code></pre>
+
+<p>Simple.</p>
+
+<h2>Why 'tap'?</h2>
+
+<p>First, it would be wise to read the articles linked above to understand the purpose  of this script. But if you're lazy, take a look at this diagram:</p>
+
+<p><img src="https://github.com/cheeaun/tappable/raw/master/diagrams/diagram-1.png" alt="Diagram 1"></p>
+
+<p>So, that's the <strong>tap</strong> event. But wait the minute, I can just use the <code>touchend</code> event to <em>simulate</em> a tap, right? Wrong, because:</p>
+
+<p><img src="https://github.com/cheeaun/tappable/raw/master/diagrams/diagram-2.png" alt="Diagram 2"></p>
+
+<p>This means that once the finger moves, it will not fire the tap event. However, Tappable works in two special cases. First is the <em>normal</em> case:</p>
+
+<p><img src="https://github.com/cheeaun/tappable/raw/master/diagrams/diagram-3.png" alt="Diagram 3"></p>
+
+<p>When the page scrolls, the button is not tapped.</p>
+
+<p>The second case is the <code>noScroll</code> mode, where moving your finger on the element will no make the page scroll. This is useful for mobile web apps which might implement their own <em>fixed</em> headers or sections on the page.</p>
+
+<p><img src="https://github.com/cheeaun/tappable/raw/master/diagrams/diagram-4.png" alt="Diagram 4"></p>
+
+<p>The button is tapped when the finger is on top of the button, even after moving in and out.</p>
+
+<h2>Documentation</h2>
+
+<h3>Syntax</h3>
+
+<pre><code>tappable(selector, opts);
+</code></pre>
+
+<h3>Arguments</h3>
+
+<ol>
+<li>
+<code>selector</code> - (<em>string</em>) The CSS selector expression of element to be tapped.</li>
+<li>
+<code>opts</code> - The options object or a function.
+
+<ul>
+<li>(<em>object</em>) The options to be passed.</li>
+<li>(<em>function</em>) The function to execute when tapped.</li>
+</ul>
+</li>
+</ol><h3>Options</h3>
+
+<ul>
+<li>noScroll - (<em>boolean</em>: defaults to <code>false</code>) Whether or not to scroll when <em>moving</em> on the element.</li>
+<li>activeClass - (<em>string</em>: defaults to <code>tappable-active</code>) A string indicating the <em>active</em> class applied to the element.</li>
+<li>onTap - (<em>function</em>) The function to execute when tapped.</li>
+<li>onStart - (<em>function</em>) The function to execute when <code>touchstart</code> event is fired.</li>
+<li>onMove - (<em>function</em>) The function to execute when <code>touchmove</code> event is fired.</li>
+<li>onMoveOut - (<em>function</em>) The function to execute when touch moves <em>out</em> of the element, if <code>noScroll</code> is <code>true</code>.</li>
+<li>onMoveIn - (<em>function</em>) The function to execute when touch moves back in the element, if <code>noScroll</code> is <code>true</code>.</li>
+<li>onEnd - (<em>function</em>) The function to execute when <code>touchend</code> event is fired.</li>
+<li>onCancel - (<em>function</em>) The function to execute when <code>touchcancel</code> event is fired, <strong>or</strong> when touch <em>moves</em> if <code>noScroll</code> is <code>false</code>.</li>
+<li>allowClick - (<em>boolean</em>: defaults to <code>false</code>) Whether or not to <code>preventDefault</code> the click on the element.</li>
+<li>boundMargin - (<em>integer</em>: defaults to 50) A number indicating the bounding area of tapped region (of the element).</li>
+<li>noScrollDelay - (<em>integer</em>: defaults to 0) A number indicating the delay in ms before 'noScroll' option kicks in.</li>
+<li>activeClassDelay - (<em>integer</em>: defaults to 0) A number indicating the delay in ms before the <em>active</em> class is applied.</li>
+<li>inactiveClassDelay - (<em>integer</em>: defaults to 0) A number indicating the delay in ms before the <em>active</em> class is removed.</li>
+</ul><h2>Demo</h2>
+
+<p>Load <a href="">http://fiddle.jshell.net/cheeaun/jxwsy/show/light/</a> in your browser. Edit here <a href="">http://jsfiddle.net/cheeaun/jxwsy/</a>. Or scan this QR code:</p>
+
+<p><img src="http://goo.gl/wFhSC.qr" alt="http://fiddle.jshell.net/cheeaun/jxwsy/show/light/"></p>
+
+<h2>Event Delegation (for tagged version 1.0)</h2>
+
+<p><strong>Note: This is no longer needed. The latest code now does event delegation by default</strong>.</p>
+
+<p>Here's a simple example:</p>
+
+<pre><code>tappable(document.body || document.getElementsByTagName('body')[0], {
+    onTap: function(e, target){
+        // e.target works too
+        if (target.tagName.toLowerCase() == 'a'){
+            alert('tap');
+        }
+    }
+});
+</code></pre>
+
+<p>For (almost) every callback function, a second argument which is the target element node, is passed. As a bonus, the event object also have an additional <code>target</code> attribute which is the target node (can be any node type, not just element node).</p>
+
+<h2>Contributing</h2>
+
+<p>Feel free to fork this project! Help and feedback would be appreciated, especially if this could be tested on Android, WebOS or any other touch-friendly browsers, not just mobile ones.</p>
+
+<h2>License</h2>
+
+<p>Tappable is licensed under the <a href="http://cheeaun.mit-license.org/">MIT license</a>.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/cheeaun">cheeaun</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
