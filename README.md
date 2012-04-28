@@ -68,7 +68,7 @@ Documentation
 Demo
 ----
 
-Load [http://fiddle.jshell.net/cheeaun/jxwsy/show/light/]() in your browser. Edit here [http://jsfiddle.net/cheeaun/jxwsy/](). Or scan this QR code:
+Load <http://fiddle.jshell.net/cheeaun/jxwsy/show/light/> in your browser. Edit here <http://jsfiddle.net/cheeaun/jxwsy/>. Or scan this QR code:
 
 ![http://fiddle.jshell.net/cheeaun/jxwsy/show/light/](http://goo.gl/wFhSC.qr)
 
