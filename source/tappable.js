@@ -3,11 +3,12 @@
   if ( typeof define === 'function' && define.amd ) {
     // AMD
     define('tappable', [], function() {
-      factory( root, root.document );
+      factory( root, window.document );
+      return root.tappable;
     });
   } else {
     // Browser global scope
-    factory( root, root.document );
+    factory( root, window.document );
   }
 }(this, function ( w, d ) {
 
