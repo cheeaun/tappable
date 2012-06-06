@@ -85,7 +85,7 @@
   w.tappable = function(selector, opts){
     if (typeof opts == 'function') opts = { onTap: opts };
     var options = {};
-    for (var key in defaults) options[key] = opts[key] || defaults[key];
+    for (var key in defaults) options[key] = typeof opts[key] !== "undefined" ? opts[key] : defaults[key];
     
     var el = options.containerElement,
       startTarget,
