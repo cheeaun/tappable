@@ -28,7 +28,6 @@
   var abs = Math.abs,
     noop = function(){},
     defaults = {
-      containerElement: d.body,
       noScroll: false,
       activeClass: 'tappable-active',
       onTap: noop,
@@ -87,7 +86,7 @@
     var options = {};
     for (var key in defaults) options[key] = opts[key] || defaults[key];
     
-    var el = options.containerElement,
+    var el = options.containerElement || d.body,
       startTarget,
       elBound,
       cancel = false,
