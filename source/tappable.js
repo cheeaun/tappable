@@ -12,19 +12,6 @@
   }
 }(this, function ( w, d ) {
 
-  var matchesSelector = function(node, selector){
-      var root = d.documentElement,
-        matches = root.matchesSelector || root.mozMatchesSelector || root.webkitMatchesSelector || root.msMatchesSelector;
-      return matches.call(node, selector);
-  },
-  closest = function(node, selector){
-    var matches = false;
-    do {
-      matches = matchesSelector(node, selector);
-    } while (!matches && (node = node.parentNode) && node.ownerDocument);
-    return matches ? node : false;
-  };
-
   var abs = Math.abs,
     noop = function(){},
     defaults = {
@@ -79,6 +66,18 @@
         return;
       }
       el.className = el.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
+    },
+    matchesSelector = function(node, selector){
+      var root = d.documentElement,
+        matches = root.matchesSelector || root.mozMatchesSelector || root.webkitMatchesSelector || root.msMatchesSelector;
+      return matches.call(node, selector);
+    },
+    closest = function(node, selector){
+      var matches = false;
+      do {
+        matches = matchesSelector(node, selector);
+      } while (!matches && (node = node.parentNode) && node.ownerDocument);
+      return matches ? node : false;
     };
 
   w.tappable = function(selector, opts){
