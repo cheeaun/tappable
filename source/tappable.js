@@ -87,6 +87,7 @@
     
     var el = options.containerElement || d.body,
       startTarget,
+      prevTarget,
       startX,
       startY,
       elBound,
@@ -114,16 +115,19 @@
       } else {
         addClass(target, activeClass);
       }
-      if (inactiveClassDelay) clearTimeout(inactiveClassTimeout);
+      if (inactiveClassDelay && target == prevTarget) clearTimeout(inactiveClassTimeout);
       
+      startX = e.clientX;
+      startY = e.clientY;
+      if (!startX || !startY){
+        var touch = e.targetTouches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+      }
       startTarget = target;
       cancel = false;
       moveOut = false;
       elBound = noScroll ? target.getBoundingClientRect() : null;
-
-      var touch = e.touches && e.touches[0];
-      startX = e.clientX || touch.clientX;
-      startY = e.clientY || touch.clientY;
       
       if (noScrollDelay){
         clearTimeout(noScrollTimeout);
@@ -197,6 +201,7 @@
         }, 1);
       }
       
+      prevTarget = startTarget;
       startTarget = null;
       setTimeout(function(){
         startX = startY = null;
