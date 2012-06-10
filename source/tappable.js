@@ -1,16 +1,16 @@
-(function(root, factory) {
+(function(root, factory){
   // Set up Tappable appropriately for the environment.
-  if ( typeof define === 'function' && define.amd ) {
+  if (typeof define === 'function' && define.amd){
     // AMD
-    define('tappable', [], function() {
-      factory( root, window.document );
+    define('tappable', [], function(){
+      factory(root, window.document);
       return root.tappable;
     });
   } else {
     // Browser global scope
-    factory( root, window.document );
+    factory(root, window.document);
   }
-}(this, function ( w, d ) {
+}(this, function(w, d){
 
   var abs = Math.abs,
     noop = function(){},
