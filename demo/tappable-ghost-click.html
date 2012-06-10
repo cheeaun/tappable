@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<title>Tappable ghost-click demo</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<style>
+.container{
+	position: relative;
+	height: 90px;
+}
+.tap, a{
+	width: 150px;
+	height: 80px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: yellow;
+}
+.tap{
+	background-color: pink;
+	z-index: 2;
+}
+</style>
+<script src="../source/tappable.js"></script>
+<h1>Tappable ghost-click demo</h1>
+<h2>Problem</h2>
+<div class="container">
+	<a href="javascript:alert('link is tapped.')">If this link is tapped, alert will pop up.</a>
+	<div class="tap" id="tap1">Tap me. There's a &lt;a&gt; under me.</div>
+</div>
+<h2>Solution</h2>
+<div class="container">
+	<a href="javascript:alert('link is tapped.')">If this link is tapped, alert will pop up.</a>
+	<div class="tap" id="tap2">Tap me. There's a &lt;a&gt; under me.</div>
+</div>
+<script>
+tappable('#tap1', {
+	allowClick: true, // Simulate the problem
+	onTap: function(e, target){
+		e.target.style.left = '160px';
+	}
+});
+tappable('#tap2', function(e, target){
+	e.target.style.left = '160px';
+});
+</script>

@@ -87,6 +87,8 @@
     
     var el = options.containerElement || d.body,
       startTarget,
+      startX,
+      startY,
       elBound,
       cancel = false,
       moveOut = false,
@@ -118,6 +120,10 @@
       cancel = false;
       moveOut = false;
       elBound = noScroll ? target.getBoundingClientRect() : null;
+
+      var touch = e.touches && e.touches[0];
+      startX = e.clientX || touch.clientX;
+      startY = e.clientY || touch.clientY;
       
       if (noScrollDelay){
         clearTimeout(noScrollTimeout);
@@ -192,18 +198,26 @@
       }
       
       startTarget = null;
+      setTimeout(function(){
+        startX = startY = null;
+      }, 400);
     }, false);
     
     el.addEventListener('touchcancel', function(e){
       if (!startTarget) return;
       removeClass(startTarget, activeClass);
-      startTarget = null;
+      startTarget = startX = startY = null;
       options.onCancel.call(el, e);
     }, false);
     
     if (!options.allowClick) el.addEventListener('click', function(e){
       var target = closest(e.target, selector);
-      if (target) e.preventDefault();
+      if (target){
+        e.preventDefault();
+      } else if (startX && startY && Math.abs(e.clientX - startX) < 25 && Math.abs(e.clientY - startY) < 25){
+        e.stopPropagation();
+        e.preventDefault();
+      }
     }, false);
   };
 
