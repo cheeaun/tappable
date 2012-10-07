@@ -168,7 +168,7 @@
           removeClass(startTarget, activeClass);
           options.onMoveOut.call(el, e, target);
         }
-      } else if (!cancel){
+      } else if (!cancel && Math.abs(y - startY) > 10){
         cancel = true;
         removeClass(startTarget, activeClass);
         options.onCancel.call(target, e);
