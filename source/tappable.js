@@ -43,7 +43,10 @@
     },
     getTarget = function(e){
       var el = e.target;
-      if (el) return el;
+      if (el) {
+        if (el.nodeType == 3) el = el.parentNode;
+        return el;
+      }
       var touch = e.targetTouches[0];
       return getTargetByCoords(touch.clientX, touch.clientY);
     },
