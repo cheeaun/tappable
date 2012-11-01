@@ -30,11 +30,24 @@
       activeClassDelay: 0,
       inactiveClassDelay: 0
     },
-    supportTouch = 'ontouchend' in document,
+    supportsTouch = function supportsTouch () {
+      // Assume lack of support by default
+      var touchSupport = false;
+
+      // Detect touch support
+      if ( 'ontouchstart' in document ) { touchSupport = true; }
+
+      // *** Issue #375 - http://code.google.com/p/phantomjs/issues/detail?id=375 ***
+      // PhantomJS falsely reports touch support
+      // we need to do some environment sniffing and set touchSupport accordingly
+      if ( 'callPhantom' in window ) { touchSupport = false; }
+
+      return touchSupport;
+    }(),
     events = {
-      start: supportTouch ? 'touchstart' : 'mousedown',
-      move: supportTouch ? 'touchmove' : 'mousemove',
-      end: supportTouch ? 'touchend' : 'mouseup'
+      start: supportsTouch ? 'touchstart' : 'mousedown',
+      move: supportsTouch ? 'touchmove' : 'mousemove',
+      end: supportsTouch ? 'touchend' : 'mouseup'
     },
     getTargetByCoords = function(x, y){
       var el = d.elementFromPoint(x, y);
