@@ -100,7 +100,7 @@
     if (typeof opts == 'function') opts = { onTap: opts };
     var options = {};
     for (var key in defaults) options[key] = opts[key] || defaults[key];
-    
+
     var el = options.containerElement || d.body,
       startTarget,
       prevTarget,
@@ -118,11 +118,11 @@
       noScrollDelay = options.noScrollDelay,
       noScrollTimeout,
       boundMargin = options.boundMargin;
-    
+
     el.addEventListener(events.start, function(e){
       var target = closest(getTarget(e), selector);
       if (!target) return;
-      
+
       if (activeClassDelay){
         clearTimeout(activeClassTimeout);
         activeClassTimeout = setTimeout(function(){
@@ -132,7 +132,7 @@
         addClass(target, activeClass);
       }
       if (inactiveClassDelay && target == prevTarget) clearTimeout(inactiveClassTimeout);
-      
+
       startX = e.clientX;
       startY = e.clientY;
       if (!startX || !startY){
@@ -144,7 +144,7 @@
       cancel = false;
       moveOut = false;
       elBound = noScroll ? target.getBoundingClientRect() : null;
-      
+
       if (noScrollDelay){
         clearTimeout(noScrollTimeout);
         noScroll = false; // set false first, then true after a delay
@@ -154,16 +154,16 @@
       }
       options.onStart.call(el, e, target);
     }, false);
-    
+
     el.addEventListener(events.move, function(e){
       if (!startTarget) return;
-      
+
       if (noScroll){
         e.preventDefault();
       } else {
         clearTimeout(activeClassTimeout);
       }
-      
+
       var target = e.target,
         x = e.clientX,
         y = e.clientY;
@@ -173,7 +173,7 @@
         if (!y) y = touch.clientY;
         if (!target) target = getTargetByCoords(x, y);
       }
-      
+
       if (noScroll){
         if (x>elBound.left-boundMargin && x<elBound.right+boundMargin && y>elBound.top-boundMargin && y<elBound.bottom+boundMargin){ // within element's boundary
           moveOut = false;
@@ -184,18 +184,18 @@
           removeClass(startTarget, activeClass);
           options.onMoveOut.call(el, e, target);
         }
-      } else if (!cancel && Math.abs(y - startY) > 10){
+     } else if ( !cancel && ( Math.abs( y - startY ) > 10 || Math.abs( x - startX ) > 10 ) ) {
         cancel = true;
         removeClass(startTarget, activeClass);
         options.onCancel.call(target, e);
       }
-      
+
       options.onMove.call(el, e, target);
     }, false);
-    
+
     el.addEventListener(events.end, function(e){
       if (!startTarget) return;
-      
+
       clearTimeout(activeClassTimeout);
       if (inactiveClassDelay){
         if (activeClassDelay && !cancel) addClass(startTarget, activeClass);
@@ -206,28 +206,28 @@
       } else {
         removeClass(startTarget, activeClass);
       }
-      
+
       options.onEnd.call(el, e, startTarget);
-      
+
       var rightClick = e.which == 3 || e.button == 2;
       if (!cancel && !moveOut && !rightClick){
         options.onTap.call(el, e, startTarget);
       }
-      
+
       prevTarget = startTarget;
       startTarget = null;
       setTimeout(function(){
         startX = startY = null;
       }, 400);
     }, false);
-    
+
     el.addEventListener('touchcancel', function(e){
       if (!startTarget) return;
       removeClass(startTarget, activeClass);
       startTarget = startX = startY = null;
       options.onCancel.call(el, e);
     }, false);
-    
+
     if (!options.allowClick) el.addEventListener('click', function(e){
       var target = closest(e.target, selector);
       if (target){
