@@ -27,14 +27,28 @@
       allowClick: false,
       boundMargin: 50,
       noScrollDelay: 0,
+      applyClasses: false,
       activeClassDelay: 0,
       inactiveClassDelay: 0
     },
-    supportTouch = 'ontouchend' in document,
+    supportsTouch = function supportsTouch () {
+      // Assume lack of support by default
+      var touchSupport = false;
+
+      // Detect touch support
+      if ( 'ontouchstart' in document ) { touchSupport = true; }
+
+      // *** Issue #375 - http://code.google.com/p/phantomjs/issues/detail?id=375 ***
+      // PhantomJS falsely reports touch support
+      // we need to do some environment sniffing and set touchSupport accordingly
+      if ( 'callPhantom' in window ) { touchSupport = false; }
+
+      return touchSupport;
+    }(),
     events = {
-      start: supportTouch ? 'touchstart' : 'mousedown',
-      move: supportTouch ? 'touchmove' : 'mousemove',
-      end: supportTouch ? 'touchend' : 'mouseup'
+      start: supportsTouch ? 'touchstart' : 'mousedown',
+      move: supportsTouch ? 'touchmove' : 'mousemove',
+      end: supportsTouch ? 'touchend' : 'mouseup'
     },
     getTargetByCoords = function(x, y){
       var el = d.elementFromPoint(x, y);
@@ -63,7 +77,7 @@
       el.className = clean(el.className + ' ' + className);
     },
     removeClass = function(el, className){
-      if (!className) return;
+      if (!className || !el.classList.contains( className ) ) return;
       if (el.classList){
         el.classList.remove(className);
         return;
@@ -87,7 +101,7 @@
     if (typeof opts == 'function') opts = { onTap: opts };
     var options = {};
     for (var key in defaults) options[key] = opts[key] || defaults[key];
-    
+
     var el = options.containerElement || d.body,
       startTarget,
       prevTarget,
@@ -96,6 +110,7 @@
       elBound,
       cancel = false,
       moveOut = false,
+      applyClasses = options.applyClasses,
       activeClass = options.activeClass,
       activeClassDelay = options.activeClassDelay,
       activeClassTimeout,
@@ -105,21 +120,21 @@
       noScrollDelay = options.noScrollDelay,
       noScrollTimeout,
       boundMargin = options.boundMargin;
-    
+
     el.addEventListener(events.start, function(e){
       var target = closest(getTarget(e), selector);
       if (!target) return;
-      
-      if (activeClassDelay){
+
+      if (applyClasses && activeClassDelay){
         clearTimeout(activeClassTimeout);
         activeClassTimeout = setTimeout(function(){
           addClass(target, activeClass);
         }, activeClassDelay);
-      } else {
+      } else if (applyClasses) {
         addClass(target, activeClass);
       }
-      if (inactiveClassDelay && target == prevTarget) clearTimeout(inactiveClassTimeout);
-      
+      if (applyClasses && inactiveClassDelay && target == prevTarget) clearTimeout(inactiveClassTimeout);
+
       startX = e.clientX;
       startY = e.clientY;
       if (!startX || !startY){
@@ -131,7 +146,7 @@
       cancel = false;
       moveOut = false;
       elBound = noScroll ? target.getBoundingClientRect() : null;
-      
+
       if (noScrollDelay){
         clearTimeout(noScrollTimeout);
         noScroll = false; // set false first, then true after a delay
@@ -141,16 +156,16 @@
       }
       options.onStart.call(el, e, target);
     }, false);
-    
+
     el.addEventListener(events.move, function(e){
       if (!startTarget) return;
-      
+
       if (noScroll){
         e.preventDefault();
-      } else {
+      } else if (applyClasses) {
         clearTimeout(activeClassTimeout);
       }
-      
+
       var target = e.target,
         x = e.clientX,
         y = e.clientY;
@@ -160,61 +175,61 @@
         if (!y) y = touch.clientY;
         if (!target) target = getTargetByCoords(x, y);
       }
-      
+
       if (noScroll){
         if (x>elBound.left-boundMargin && x<elBound.right+boundMargin && y>elBound.top-boundMargin && y<elBound.bottom+boundMargin){ // within element's boundary
           moveOut = false;
-          addClass(startTarget, activeClass);
+          if (applyClasses) addClass(startTarget, activeClass);
           options.onMoveIn.call(el, e, target);
         } else {
           moveOut = true;
-          removeClass(startTarget, activeClass);
+          if (applyClasses) removeClass(startTarget, activeClass);
           options.onMoveOut.call(el, e, target);
         }
-      } else if (!cancel && Math.abs(y - startY) > 10){
+      } else if (!cancel && ( Math.abs(y - startY) > 10 || Math.abs(x - startX) > 10 ) ){
         cancel = true;
-        removeClass(startTarget, activeClass);
+        if (applyClasses) removeClass(startTarget, activeClass);
         options.onCancel.call(target, e);
       }
-      
+
       options.onMove.call(el, e, target);
     }, false);
-    
+
     el.addEventListener(events.end, function(e){
       if (!startTarget) return;
-      
-      clearTimeout(activeClassTimeout);
-      if (inactiveClassDelay){
+
+      if (applyClasses) clearTimeout(activeClassTimeout);
+      if (applyClasses && inactiveClassDelay){
         if (activeClassDelay && !cancel) addClass(startTarget, activeClass);
         var activeTarget = startTarget;
         inactiveClassTimeout = setTimeout(function(){
           removeClass(activeTarget, activeClass);
         }, inactiveClassDelay);
-      } else {
+      } else if (applyClasses) {
         removeClass(startTarget, activeClass);
       }
-      
+
       options.onEnd.call(el, e, startTarget);
-      
+
       var rightClick = e.which == 3 || e.button == 2;
       if (!cancel && !moveOut && !rightClick){
         options.onTap.call(el, e, startTarget);
       }
-      
+
       prevTarget = startTarget;
       startTarget = null;
       setTimeout(function(){
         startX = startY = null;
       }, 400);
     }, false);
-    
+
     el.addEventListener('touchcancel', function(e){
       if (!startTarget) return;
-      removeClass(startTarget, activeClass);
+      if (applyClasses) removeClass(startTarget, activeClass);
       startTarget = startX = startY = null;
       options.onCancel.call(el, e);
     }, false);
-    
+
     if (!options.allowClick) el.addEventListener('click', function(e){
       var target = closest(e.target, selector);
       if (target){
