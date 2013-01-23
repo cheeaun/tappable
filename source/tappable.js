@@ -27,6 +27,7 @@
       allowClick: false,
       boundMargin: 50,
       noScrollDelay: 0,
+      applyClasses: false,
       activeClassDelay: 0,
       inactiveClassDelay: 0
     },
@@ -76,7 +77,7 @@
       el.className = clean(el.className + ' ' + className);
     },
     removeClass = function(el, className){
-      if (!className) return;
+      if (!className || !el.classList.contains( className ) ) return;
       if (el.classList){
         el.classList.remove(className);
         return;
@@ -109,6 +110,7 @@
       elBound,
       cancel = false,
       moveOut = false,
+      applyClasses = options.applyClasses,
       activeClass = options.activeClass,
       activeClassDelay = options.activeClassDelay,
       activeClassTimeout,
@@ -123,15 +125,15 @@
       var target = closest(getTarget(e), selector);
       if (!target) return;
 
-      if (activeClassDelay){
+      if (applyClasses && activeClassDelay){
         clearTimeout(activeClassTimeout);
         activeClassTimeout = setTimeout(function(){
           addClass(target, activeClass);
         }, activeClassDelay);
-      } else {
+      } else if (applyClasses) {
         addClass(target, activeClass);
       }
-      if (inactiveClassDelay && target == prevTarget) clearTimeout(inactiveClassTimeout);
+      if (applyClasses && inactiveClassDelay && target == prevTarget) clearTimeout(inactiveClassTimeout);
 
       startX = e.clientX;
       startY = e.clientY;
@@ -160,7 +162,7 @@
 
       if (noScroll){
         e.preventDefault();
-      } else {
+      } else if (applyClasses) {
         clearTimeout(activeClassTimeout);
       }
 
@@ -177,16 +179,16 @@
       if (noScroll){
         if (x>elBound.left-boundMargin && x<elBound.right+boundMargin && y>elBound.top-boundMargin && y<elBound.bottom+boundMargin){ // within element's boundary
           moveOut = false;
-          addClass(startTarget, activeClass);
+          if (applyClasses) addClass(startTarget, activeClass);
           options.onMoveIn.call(el, e, target);
         } else {
           moveOut = true;
-          removeClass(startTarget, activeClass);
+          if (applyClasses) removeClass(startTarget, activeClass);
           options.onMoveOut.call(el, e, target);
         }
-     } else if ( !cancel && ( Math.abs( y - startY ) > 10 || Math.abs( x - startX ) > 10 ) ) {
+      } else if (!cancel && ( Math.abs(y - startY) > 10 || Math.abs(x - startX) > 10 ) ){
         cancel = true;
-        removeClass(startTarget, activeClass);
+        if (applyClasses) removeClass(startTarget, activeClass);
         options.onCancel.call(target, e);
       }
 
@@ -196,14 +198,14 @@
     el.addEventListener(events.end, function(e){
       if (!startTarget) return;
 
-      clearTimeout(activeClassTimeout);
-      if (inactiveClassDelay){
+      if (applyClasses) clearTimeout(activeClassTimeout);
+      if (applyClasses && inactiveClassDelay){
         if (activeClassDelay && !cancel) addClass(startTarget, activeClass);
         var activeTarget = startTarget;
         inactiveClassTimeout = setTimeout(function(){
           removeClass(activeTarget, activeClass);
         }, inactiveClassDelay);
-      } else {
+      } else if (applyClasses) {
         removeClass(startTarget, activeClass);
       }
 
@@ -223,7 +225,7 @@
 
     el.addEventListener('touchcancel', function(e){
       if (!startTarget) return;
-      removeClass(startTarget, activeClass);
+      if (applyClasses) removeClass(startTarget, activeClass);
       startTarget = startX = startY = null;
       options.onCancel.call(el, e);
     }, false);
