@@ -65,6 +65,11 @@ Documentation
 * activeClassDelay - (*integer*: defaults to 0) A number indicating the delay in ms before the *active* class is applied.
 * inactiveClassDelay - (*integer*: defaults to 0) A number indicating the delay in ms before the *active* class is removed.
 
+### Instance Object
+
+* el - (*object*) A reference to the bound DOM element.
+* destroy - (*function*) Removes event listeners from the bound DOM element.
+
 Demo
 ----
 
