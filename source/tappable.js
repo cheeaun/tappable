@@ -243,6 +243,8 @@
         el.removeEventListener(events.end, onEnd, false);
         el.removeEventListener('touchcancel', onCancel, false);
         if (!options.allowClick) el.removeEventListener('click', onClick, false);
+
+        return this;
       }
     };
 
