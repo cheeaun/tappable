@@ -171,7 +171,7 @@
           removeClass(startTarget, activeClass);
           options.onMoveOut.call(el, e, target);
         }
-      } else if (!cancel && Math.abs(y - startY) > 10){
+      } else if (!cancel && abs(y - startY) > 10){
         cancel = true;
         removeClass(startTarget, activeClass);
         options.onCancel.call(target, e);
@@ -219,7 +219,7 @@
       var target = closest(e.target, selector);
       if (target){
         e.preventDefault();
-      } else if (startX && startY && Math.abs(e.clientX - startX) < 25 && Math.abs(e.clientY - startY) < 25){
+      } else if (startX && startY && abs(e.clientX - startX) < 25 && abs(e.clientY - startY) < 25){
         e.stopPropagation();
         e.preventDefault();
       }
