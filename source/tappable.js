@@ -76,15 +76,25 @@
       return matches.call(node, selector);
     },
     closest = function(node, selector){
-      var matches = false;
-      do {
-        matches = matchesSelector(node, selector);
-      } while (!matches && (node = node.parentNode) && node.ownerDocument);
-      return matches ? node : false;
+      if (typeof selector === 'string') {
+        var matches = false;
+        do {
+          matches = TappableHelper.matchesSelector(node, selector);
+        } while (!matches && (node = node.parentNode) && node.ownerDocument);
+        return matches ? node : false;
+      } else {
+        if (node === selector || selector.contains(node)) {
+          return selector;
+        }
+        return false;
+      }
     };
 
   w.tappable = function(selector, opts){
-    if (typeof opts == 'function') opts = { onTap: opts };
+    if (typeof selector === 'undefined') {
+      return;
+    }
+    if (typeof opts === 'function') opts = { onTap: opts };
     var options = {};
     for (var key in defaults) options[key] = opts[key] || defaults[key];
 
