@@ -72,7 +72,7 @@
       }
       el.className = el.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
     },
-    matchesSelector: function (node, selector) {
+    matchesSelector = function (node, selector) {
         return matchesSelectorFn.call(node, selector);
     },
     closest = function(node, selector){
