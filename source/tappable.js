@@ -14,6 +14,8 @@
 
   var abs = Math.abs,
     noop = function(){},
+    dEl = d.documentElement,
+    matchesSelector = dEl.matchesSelector || dEl.mozMatchesSelector || dEl.webkitMatchesSelector || dEl.oMatchesSelector || dEl.msMatchesSelector,
     defaults = {
       noScroll: false,
       activeClass: 'tappable-active',
@@ -70,16 +72,11 @@
       }
       el.className = el.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
     },
-    matchesSelector = function(node, selector){
-      var root = d.documentElement,
-        matches = root.matchesSelector || root.mozMatchesSelector || root.webkitMatchesSelector || root.oMatchesSelector || root.msMatchesSelector;
-      return matches.call(node, selector);
-    },
     closest = function(node, selector){
       if (typeof selector === 'string') {
         var matches = false;
         do {
-          matches = TappableHelper.matchesSelector(node, selector);
+          matches = matchesSelector(node, selector);
         } while (!matches && (node = node.parentNode) && node.ownerDocument);
         return matches ? node : false;
       } else {
