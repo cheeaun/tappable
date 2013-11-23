@@ -15,7 +15,7 @@
   var abs = Math.abs,
     noop = function(){},
     dEl = d.documentElement,
-    matchesSelector = dEl.matchesSelector || dEl.mozMatchesSelector || dEl.webkitMatchesSelector || dEl.oMatchesSelector || dEl.msMatchesSelector,
+    matchesSelectorFn = dEl.matchesSelector || dEl.mozMatchesSelector || dEl.webkitMatchesSelector || dEl.oMatchesSelector || dEl.msMatchesSelector,
     defaults = {
       noScroll: false,
       activeClass: 'tappable-active',
@@ -71,6 +71,9 @@
         return;
       }
       el.className = el.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
+    },
+    matchesSelector: function (node, selector) {
+        return matchesSelectorFn.call(node, selector);
     },
     closest = function(node, selector){
       if (typeof selector === 'string') {
