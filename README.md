@@ -77,7 +77,7 @@ Load <http://fiddle.jshell.net/cheeaun/jxwsy/show/light/> in your browser. Edit 
 
 ![http://fiddle.jshell.net/cheeaun/jxwsy/show/light/](http://goo.gl/wFhSC.qr)
 
-Event Delegation (for tagged version 1.0)
+Event Delegation (for tagged version 0.1)
 ----------------------------------------
 
 **Note: This is no longer needed. The latest code now does event delegation by default**.
