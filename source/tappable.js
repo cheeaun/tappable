@@ -14,6 +14,8 @@
 
   var abs = Math.abs,
     noop = function(){},
+    dEl = d.documentElement,
+    matchesSelectorFn = dEl.matchesSelector || dEl.mozMatchesSelector || dEl.webkitMatchesSelector || dEl.oMatchesSelector || dEl.msMatchesSelector,
     defaults = {
       noScroll: false,
       activeClass: 'tappable-active',
@@ -70,21 +72,29 @@
       }
       el.className = el.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
     },
-    matchesSelector = function(node, selector){
-      var root = d.documentElement,
-        matches = root.matchesSelector || root.mozMatchesSelector || root.webkitMatchesSelector || root.oMatchesSelector || root.msMatchesSelector;
-      return matches.call(node, selector);
+    matchesSelector = function (node, selector) {
+        return matchesSelectorFn.call(node, selector);
     },
     closest = function(node, selector){
-      var matches = false;
-      do {
-        matches = matchesSelector(node, selector);
-      } while (!matches && (node = node.parentNode) && node.ownerDocument);
-      return matches ? node : false;
+      if (typeof selector === 'string') {
+        var matches = false;
+        do {
+          matches = matchesSelector(node, selector);
+        } while (!matches && (node = node.parentNode) && node.ownerDocument);
+        return matches ? node : false;
+      } else {
+        if (node === selector || selector.contains(node)) {
+          return selector;
+        }
+        return false;
+      }
     };
 
   w.tappable = function(selector, opts){
-    if (typeof opts == 'function') opts = { onTap: opts };
+    if (typeof selector === 'undefined') {
+      return;
+    }
+    if (typeof opts === 'function') opts = { onTap: opts };
     var options = {};
     for (var key in defaults) options[key] = opts[key] || defaults[key];
 
