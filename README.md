@@ -37,7 +37,7 @@ The button is tapped when the finger is on top of the button, even after moving 
 Documentation
 -------------
 
-###Syntax
+### Syntax
 
 	tappable(selector, opts);
 
